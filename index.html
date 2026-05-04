@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="no-referrer">
+    <title>Toricet - Katalog Binder & Looseleaf</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="logo">🎓 TORICET</div>
+            <nav>
+                <a href="#home">Beranda</a>
+                <a href="#products">Produk</a>
+                <a href="#about">Tentang</a>
+                <div class="cart-icon" onclick="openCart()">
+                    🛒 <span id="cart-count">0</span>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>Selamat Datang di Toricet</h1>
+            <p>Katalog lengkap binder dan looseleaf berkualitas tinggi untuk kebutuhan Anda</p>
+            <button class="btn-primary" onclick="document.getElementById('products').scrollIntoView({behavior: 'smooth'})">
+                Lihat Katalog
+            </button>
+        </div>
+    </section>
+
+    <!-- Filter Section -->
+    <section class="filter-section">
+        <div class="filter-container">
+            <button class="filter-btn active" onclick="filterProducts('semua')">Semua Produk</button>
+            <button class="filter-btn" onclick="filterProducts('binder')">Binder</button>
+            <button class="filter-btn" onclick="filterProducts('looseleaf')">Looseleaf</button>
+            <button class="filter-btn" onclick="filterProducts('premium')">Premium</button>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="products-section" id="products">
+        <div class="products-grid" id="products-grid">
+            <!-- Products akan dimuat oleh JavaScript -->
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="about">
+        <div class="footer-content">
+            <h3>Toricet</h3>
+            <p>Menyediakan binder dan looseleaf berkualitas untuk pelajar dan profesional</p>
+            <p>&copy; 2024 Toricet. Semua hak dilindungi.</p>
+            <p>📧 info@toricet.com | 📱 +62 812-3456-7890</p>
+        </div>
+    </footer>
+
+    <!-- Cart Modal -->
+    <div id="cartModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeCart()">&times;</span>
+            <h2>🛒 Keranjang Belanja</h2>
+            <div id="cart-items"></div>
+            <div class="modal-total">Total: Rp <span id="total-price">0</span></div>
+            <button class="btn-checkout" onclick="openCheckoutForm()">Lanjut ke Pembayaran</button>
+        </div>
+    </div>
+
+    <!-- Checkout Form Modal -->
+    <div id="checkoutModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeCheckoutForm()">&times;</span>
+            <h2>📋 Data Diri Pelanggan</h2>
+            <form id="checkoutForm" onsubmit="submitCheckout(event)">
+                <div class="form-group">
+                    <label for="nama">Nama Lengkap</label>
+                    <input type="text" id="nama" name="nama" required placeholder="Masukkan nama lengkap Anda">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required placeholder="Masukkan email Anda">
+                </div>
+                <div class="form-group">
+                    <label for="phone">Nomor Telepon</label>
+                    <input type="tel" id="phone" name="phone" required placeholder="Masukkan nomor telepon Anda">
+                </div>
+                <button type="submit" class="btn-checkout">Konfirmasi Pesanan</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Payment Detail Modal -->
+    <div id="paymentModal" class="modal">
+        <div class="modal-content payment-modal">
+            <span class="close" onclick="closePaymentModal()">&times;</span>
+            <h2>💳 Detail Pesanan & Pembayaran</h2>
+            
+            <div class="payment-section">
+                <h3>📦 Ringkasan Pesanan</h3>
+                <div id="payment-items"></div>
+                <div class="payment-divider"></div>
+                <div class="payment-total">
+                    <span>Total Pembayaran:</span>
+                    <span class="total-amount">Rp <span id="payment-total">0</span></span>
+                </div>
+            </div>
+
+            <div class="payment-section">
+                <h3>👤 Data Pelanggan</h3>
+                <div class="customer-info">
+                    <div class="info-row">
+                        <span class="label">Nama:</span>
+                        <span id="display-nama"></span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Email:</span>
+                        <span id="display-email"></span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Telepon:</span>
+                        <span id="display-phone"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="payment-section">
+                <h3>💰 Metode Pembayaran</h3>
+                <div class="payment-methods">
+                    <label class="payment-method qris-only">
+                        <input type="radio" name="payment" value="qris" checked>
+                        <span class="method-icon">📱</span>
+                        <span class="method-name">QRIS</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="payment-actions">
+                <button class="btn-cancel" onclick="closePaymentModal()">Kembali</button>
+                <button class="btn-pay" onclick="processPayment()">Lanjutkan Pembayaran</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- QR Code Payment Modal -->
+    <div id="qrModal" class="modal">
+        <div class="modal-content qr-modal">
+            <span class="close" onclick="closeQRModal()">&times;</span>
+            <h2>💳 Pembayaran QRIS</h2>
+            
+            <div class="qr-section">
+                <div id="qr-code-container" class="qr-code-container"></div>
+                <p class="qr-instruction">Scan QR Code dengan aplikasi pembayaran Anda</p>
+            </div>
+
+            <div class="payment-info-section">
+                <div class="info-item">
+                    <span class="info-label">Nama:</span>
+                    <span class="info-value" id="qr-first-name"></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Email:</span>
+                    <span class="info-value" id="qr-email"></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Jumlah Pembayaran:</span>
+                    <span class="info-value amount" id="qr-amount"></span>
+                </div>
+            </div>
+
+            <div class="qr-actions">
+                <button class="btn-primary" onclick="closeQRModal()">Selesai</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
