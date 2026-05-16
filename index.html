@@ -12,7 +12,7 @@
     <!-- Header -->
     <header>
         <div class="header-container">
-            <div class="logo">🎓 TORICET</div>
+            <img src="logo.png" alt="Toricet Logo" class="logo">
             <nav>
                 <a href="#home">Beranda</a>
                 <a href="#products">Produk</a>
@@ -41,7 +41,7 @@
             <button class="filter-btn active" onclick="filterProducts('semua')">Semua Produk</button>
             <button class="filter-btn" onclick="filterProducts('binder')">Binder</button>
             <button class="filter-btn" onclick="filterProducts('looseleaf')">Looseleaf</button>
-            <button class="filter-btn" onclick="filterProducts('premium')">Premium</button>
+            <!-- <button class="filter-btn" onclick="filterProducts('premium')">Premium</button> -->
         </div>
     </section>
 
@@ -57,8 +57,9 @@
         <div class="footer-content">
             <h3>Toricet</h3>
             <p>Menyediakan binder dan looseleaf berkualitas untuk pelajar dan profesional</p>
-            <p>&copy; 2024 Toricet. Semua hak dilindungi.</p>
-            <p>📧 info@toricet.com | 📱 +62 812-3456-7890</p>
+            <p>&copy; 2026 Toricet. Semua hak dilindungi.</p>
+            <p>📱 +62 856-5580-8326</p>
+            <!-- <p>📧 info@toricet.com | 📱 +62 856-5580-8326</p> -->
         </div>
     </footer>
 
@@ -68,29 +69,75 @@
             <span class="close" onclick="closeCart()">&times;</span>
             <h2>🛒 Keranjang Belanja</h2>
             <div id="cart-items"></div>
-            <div class="modal-total">Total: Rp <span id="total-price">0</span></div>
+            <div class="modal-total">Total: Rp<span id="total-price">0</span></div>
             <button class="btn-checkout" onclick="openCheckoutForm()">Lanjut ke Pembayaran</button>
         </div>
     </div>
 
     <!-- Checkout Form Modal -->
     <div id="checkoutModal" class="modal">
-        <div class="modal-content">
+        <div class="modal-content checkout-modal">
             <span class="close" onclick="closeCheckoutForm()">&times;</span>
             <h2>📋 Data Diri Pelanggan</h2>
             <form id="checkoutForm" onsubmit="submitCheckout(event)">
-                <div class="form-group">
-                    <label for="nama">Nama Lengkap</label>
-                    <input type="text" id="nama" name="nama" required placeholder="Masukkan nama lengkap Anda">
+                <!-- Data Pribadi -->
+                <div class="form-section">
+                    <h3>👤 Data Pribadi</h3>
+                    <div class="form-group">
+                        <label for="nama">Nama Lengkap</label>
+                        <input type="text" id="nama" name="nama" required placeholder="Masukkan nama lengkap Anda">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required placeholder="Masukkan email Anda">
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Nomor Telepon</label>
+                        <input type="tel" id="phone" name="phone" required placeholder="Masukkan nomor telepon Anda">
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" required placeholder="Masukkan email Anda">
+
+                <!-- Alamat Pengiriman -->
+                <div class="form-section">
+                    <h3>📍 Alamat Pengiriman</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="provinsi">Provinsi</label>
+                            <select id="provinsi" name="provinsi" required onchange="loadKota()">
+                                <option value="">-- Pilih Provinsi --</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="kota">Kota/Kabupaten</label>
+                            <select id="kota" name="kota" required onchange="loadKecamatan()" disabled>
+                                <option value="">-- Pilih Kota/Kabupaten --</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="kecamatan">Kecamatan</label>
+                            <select id="kecamatan" name="kecamatan" required onchange="loadKelurahan()" disabled>
+                                <option value="">-- Pilih Kecamatan --</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="kelurahan">Kelurahan</label>
+                            <select id="kelurahan" name="kelurahan" required onchange="handleKelurahanChange()" disabled>
+                                <option value="">-- Pilih Kelurahan --</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="kodepos">Kode Pos</label>
+                        <input type="text" id="kodepos" name="kodepos" required placeholder="Masukkan kode pos" readonly disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="alamat">Alamat Lengkap</label>
+                        <textarea id="alamat" name="alamat" required placeholder="Masukkan alamat lengkap Anda (Jalan, No. Rumah, RT/RW, dll)" rows="3"></textarea>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="phone">Nomor Telepon</label>
-                    <input type="tel" id="phone" name="phone" required placeholder="Masukkan nomor telepon Anda">
-                </div>
+
                 <button type="submit" class="btn-checkout">Konfirmasi Pesanan</button>
             </form>
         </div>
@@ -99,16 +146,18 @@
     <!-- Payment Detail Modal -->
     <div id="paymentModal" class="modal">
         <div class="modal-content payment-modal">
-            <span class="close" onclick="closePaymentModal()">&times;</span>
+            <span class="close" onclick="closePaymentModalOnly()">&times;</span>
             <h2>💳 Detail Pesanan & Pembayaran</h2>
             
             <div class="payment-section">
                 <h3>📦 Ringkasan Pesanan</h3>
                 <div id="payment-items"></div>
                 <div class="payment-divider"></div>
+                <div id="shipping-section"></div>
+                <div class="payment-divider"></div>
                 <div class="payment-total">
                     <span>Total Pembayaran:</span>
-                    <span class="total-amount">Rp <span id="payment-total">0</span></span>
+                    <span class="total-amount">Rp<span id="payment-total">0</span></span>
                 </div>
             </div>
 
@@ -131,6 +180,36 @@
             </div>
 
             <div class="payment-section">
+                <h3>📍 Alamat Pengiriman</h3>
+                <div class="customer-info">
+                    <div class="info-row">
+                        <span class="label">Provinsi:</span>
+                        <span id="display-provinsi"></span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Kota/Kabupaten:</span>
+                        <span id="display-kota"></span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Kecamatan:</span>
+                        <span id="display-kecamatan"></span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Kelurahan:</span>
+                        <span id="display-kelurahan"></span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Kode Pos:</span>
+                        <span id="display-kodepos"></span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Alamat Lengkap:</span>
+                        <span id="display-alamat" style="word-wrap: break-word; white-space: normal;"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="payment-section">
                 <h3>💰 Metode Pembayaran</h3>
                 <div class="payment-methods">
                     <label class="payment-method qris-only">
@@ -143,7 +222,7 @@
 
             <div class="payment-actions">
                 <button class="btn-cancel" onclick="closePaymentModal()">Kembali</button>
-                <button class="btn-pay" onclick="processPayment()">Lanjutkan Pembayaran</button>
+                <button class="btn-pay" onclick="processPayment(event)">Lanjutkan Pembayaran</button>
             </div>
         </div>
     </div>
@@ -176,6 +255,21 @@
 
             <div class="qr-actions">
                 <button class="btn-primary" onclick="closeQRModal()">Selesai</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Image Slider Modal -->
+    <div id="imageSliderModal" class="modal">
+        <div class="modal-content image-slider-modal">
+            <span class="close" onclick="closeImageSlider()">&times;</span>
+            <div class="slider-container">
+                <button class="slider-btn slider-prev" onclick="prevImage()">❮</button>
+                <img id="sliderImage" src="" alt="Product Image" class="slider-image">
+                <button class="slider-btn slider-next" onclick="nextImage()">❯</button>
+            </div>
+            <div class="slider-info">
+                <span id="sliderCounter">1 / 1</span>
             </div>
         </div>
     </div>
