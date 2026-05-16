@@ -74,6 +74,17 @@ function displayProducts(productsToDisplay) {
                 </div>
             </div>
         `;
+        
+        // Add click handler to entire card to open gallery (except button)
+        const productId = product.id;
+        productCard.addEventListener('click', function(e) {
+            // Don't open gallery if clicking the button
+            if (e.target.closest('.btn-add')) {
+                return;
+            }
+            openImageSlider(productId);
+        });
+        
         grid.appendChild(productCard);
     });
     
