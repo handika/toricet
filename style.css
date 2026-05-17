@@ -99,7 +99,7 @@ nav a:hover {
 }
 
 .btn-primary {
-    background-color: #CF66A1;
+    background-color: #A84A7F;
     color: white;
     padding: 12px 30px;
     border: none;
@@ -165,6 +165,7 @@ nav a:hover {
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border: 1px solid #E0E0E0;
     transition: transform 0.3s, box-shadow 0.3s;
     cursor: pointer;
     display: flex;
@@ -220,10 +221,11 @@ nav a:hover {
 
 .product-category {
     font-size: 12px;
-    color: #CF66A1;
+    color: #8B3A63;
     margin-bottom: 10px;
     text-transform: uppercase;
     letter-spacing: 1px;
+    font-weight: 600;
 }
 
 .product-description {
@@ -275,6 +277,12 @@ footer {
 .footer-content {
     max-width: 1200px;
     margin: 0 auto;
+}
+
+.footer-content h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    font-weight: bold;
 }
 
 .footer-content p {
@@ -1034,7 +1042,7 @@ footer {
         margin-top: 40px;
     }
 
-    .footer-content h3 {
+    .footer-content h2 {
         font-size: 18px;
         margin-bottom: 10px;
     }
