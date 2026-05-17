@@ -186,6 +186,7 @@ nav a:hover {
     justify-content: center;
     font-size: 60px;
     transition: background-color 0.3s;
+    background: linear-gradient(135deg, #8B3A63 0%, #CF66A1 100%) !important;
 }
 
 .product-image-img {
@@ -246,7 +247,7 @@ nav a:hover {
 .product-price {
     font-size: 20px;
     font-weight: bold;
-    color: #CF66A1;
+    color: #B8527D;
 }
 
 .btn-add {
@@ -1016,7 +1017,7 @@ footer {
     .product-price {
         font-size: 18px;
         text-align: center;
-        color: #8B3A63;
+        color: #B8527D;
         font-weight: bold;
     }
 
