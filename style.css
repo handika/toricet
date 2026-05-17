@@ -337,7 +337,7 @@ footer {
 }
 
 .close {
-    color: #aaa;
+    color: #666;
     float: right;
     font-size: 28px;
     font-weight: bold;
@@ -393,7 +393,7 @@ footer {
 
 .cart-item-price {
     font-size: 12px;
-    color: #999;
+    color: #666;
 }
 
 .cart-item-controls {
@@ -518,7 +518,7 @@ footer {
 
 .form-group input::placeholder,
 .form-group textarea::placeholder {
-    color: #ccc;
+    color: #999;
 }
 
 .form-group select {
@@ -610,7 +610,7 @@ footer {
 }
 
 .payment-item-qty {
-    color: #999;
+    color: #666;
     margin: 0 10px;
 }
 
@@ -635,7 +635,7 @@ footer {
 
 .payment-subtotal-label {
     font-size: 12px;
-    color: #999;
+    color: #666;
     margin-bottom: 8px;
     display: flex;
     justify-content: space-between;
