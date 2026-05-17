@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://toricet.my.id/sitemap.xml
