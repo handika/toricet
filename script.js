@@ -1,4 +1,4 @@
-// Data Produk - dimuat dari product.json
+﻿// Data Produk - dimuat dari product.json
 let products = [];
 
 // Data Alamat
@@ -12,9 +12,13 @@ let currentProductId = null;
 let currentImageIndex = 1;
 let totalImages = 0;
 
+// Notification function
+function showNotification(message) {
+    // Optional: You can add a visual notification here
+}
+
 // Inisialisasi halaman
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOM Content Loaded');
     loadProducts();
     loadCartFromStorage();
     updateCartCount();
@@ -23,14 +27,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Load data produk dari product.json
 function loadProducts() {
-    console.log('Loading products...');
     fetch('product/product.json')
         .then(response => {
-            console.log('Response status:', response.status);
             return response.json();
         })
         .then(data => {
-            console.log('Products loaded:', data.length, 'items');
             products = data;
             displayProducts(products);
         })
@@ -42,7 +43,6 @@ function loadProducts() {
 
 // Tampilkan produk
 function displayProducts(productsToDisplay) {
-    console.log('Displaying products:', productsToDisplay.length);
     const grid = document.getElementById('products-grid');
     grid.innerHTML = '';
 
@@ -89,7 +89,6 @@ function displayProducts(productsToDisplay) {
     });
     
     // Inisialisasi lazy loading untuk image yang baru ditambahkan
-    console.log('Initializing lazy loading...');
     initializeLazyLoading();
 }
 
@@ -185,10 +184,10 @@ function displayCart() {
                     <div class="cart-item-price">Rp${item.price.toLocaleString('id-ID')}</div>
                 </div>
                 <div class="cart-item-controls">
-                    <button class="cart-qty-btn" onclick="updateQuantity(${item.id}, ${item.quantity - 1})">−</button>
+                    <button class="cart-qty-btn" onclick="updateQuantity(${item.id}, ${item.quantity - 1})">âˆ’</button>
                     <span class="cart-qty">${item.quantity}</span>
                     <button class="cart-qty-btn" onclick="updateQuantity(${item.id}, ${item.quantity + 1})">+</button>
-                    <button class="cart-remove-btn" onclick="removeFromCart(${item.id})">×</button>
+                    <button class="cart-remove-btn" onclick="removeFromCart(${item.id})">Ã—</button>
                 </div>
                 <div class="cart-item-subtotal">Rp${subtotal.toLocaleString('id-ID')}</div>
             </div>
@@ -210,8 +209,10 @@ function openCart() {
     displayCart();
     const cartModal = document.getElementById('cartModal');
     cartModal.style.display = 'block';
-    // Scroll ke atas
-    cartModal.querySelector('.modal-content').scrollTop = 0;
+    // Scroll ke atas (use requestAnimationFrame to avoid forced reflow)
+    requestAnimationFrame(() => {
+        cartModal.querySelector('.modal-content').scrollTop = 0;
+    });
 }
 
 // Tutup keranjang
@@ -229,8 +230,10 @@ function openCheckoutForm() {
     closeCart();
     const checkoutModal = document.getElementById('checkoutModal');
     checkoutModal.style.display = 'block';
-    // Scroll ke atas
-    checkoutModal.querySelector('.modal-content').scrollTop = 0;
+    // Scroll ke atas (use requestAnimationFrame to avoid forced reflow)
+    requestAnimationFrame(() => {
+        checkoutModal.querySelector('.modal-content').scrollTop = 0;
+    });
     document.getElementById('checkoutForm').reset();
 }
 
@@ -622,15 +625,15 @@ function displayPaymentModal() {
             shippingHtml += `
                 <div style="margin-top: 10px;">
                     <div class="payment-item" style="padding-top: 10px; font-size: 13px; color: #999;">
-                        <span class="payment-item-name">📦 Berat Barang</span>
-                        <span class="payment-item-price">${totalWeight}g → ${roundedWeight}g (${weightInKg}kg)</span>
+                        <span class="payment-item-name">ðŸ“¦ Berat Barang</span>
+                        <span class="payment-item-price">${totalWeight}g â†’ ${roundedWeight}g (${weightInKg}kg)</span>
                     </div>
                     <div class="payment-item" style="padding-top: 10px; font-size: 13px; color: #999;">
-                        <span class="payment-item-name">💰 Tarif Pengiriman</span>
-                        <span class="payment-item-price">Rp${tarifPerKg.toLocaleString('id-ID')}/kg × ${weightInKg}kg</span>
+                        <span class="payment-item-name">ðŸ’° Tarif Pengiriman</span>
+                        <span class="payment-item-price">Rp${tarifPerKg.toLocaleString('id-ID')}/kg Ã— ${weightInKg}kg</span>
                     </div>
                     <div class="payment-item" style="padding-top: 10px;">
-                        <span class="payment-item-name">🚚 Biaya Pengiriman (${window.customerData.shipping.data.nama_layanan})</span>
+                        <span class="payment-item-name">ðŸšš Biaya Pengiriman (${window.customerData.shipping.data.nama_layanan})</span>
                         <span class="payment-item-price">Rp${totalShippingCost.toLocaleString('id-ID')}</span>
                     </div>
                     <div class="payment-subtotal-section">
@@ -639,7 +642,7 @@ function displayPaymentModal() {
                             <span style="font-weight: bold; color: #5864A4;">Rp${subtotal.toLocaleString('id-ID')}</span>
                         </div>
                         <div class="payment-item payment-gateway-fee">
-                            <span class="payment-item-name">💳 Biaya Payment Gateway (0,71%)</span>
+                            <span class="payment-item-name">ðŸ’³ Biaya Payment Gateway (0,71%)</span>
                             <span class="payment-item-price">Rp${gatewayFee.toLocaleString('id-ID')}</span>
                         </div>
                     </div>
@@ -654,7 +657,7 @@ function displayPaymentModal() {
                             <span style="font-weight: bold; color: #5864A4;">Rp${subtotal.toLocaleString('id-ID')}</span>
                         </div>
                         <div class="payment-item payment-gateway-fee">
-                            <span class="payment-item-name">💳 Biaya Payment Gateway (0,71%)</span>
+                            <span class="payment-item-name">ðŸ’³ Biaya Payment Gateway (0,71%)</span>
                             <span class="payment-item-price">Rp${gatewayFee.toLocaleString('id-ID')}</span>
                         </div>
                     </div>
@@ -668,8 +671,10 @@ function displayPaymentModal() {
     // Buka payment modal
     const paymentModal = document.getElementById('paymentModal');
     paymentModal.style.display = 'block';
-    // Scroll ke atas
-    paymentModal.querySelector('.modal-content').scrollTop = 0;
+    // Scroll ke atas (use requestAnimationFrame to avoid forced reflow)
+    requestAnimationFrame(() => {
+        paymentModal.querySelector('.modal-content').scrollTop = 0;
+    });
 }
 
 // Tutup payment modal saja (tombol close X)
@@ -698,8 +703,10 @@ function closePaymentModal() {
     // Buka kembali modal checkout
     const checkoutModal = document.getElementById('checkoutModal');
     checkoutModal.style.display = 'block';
-    // Scroll ke atas
-    checkoutModal.querySelector('.modal-content').scrollTop = 0;
+    // Scroll ke atas (use requestAnimationFrame to avoid forced reflow)
+    requestAnimationFrame(() => {
+        checkoutModal.querySelector('.modal-content').scrollTop = 0;
+    });
 }
 
 // Proses pembayaran
@@ -730,8 +737,6 @@ function processPayment(evt) {
     payBtn.disabled = true;
     payBtn.textContent = 'Memproses...';
     
-    console.log('Mengirim payload:', payload);
-    
     // AJAX POST Request ke endpoint baru
     fetch('https://cool-field-b445-prod.toricet.workers.dev', {
         method: 'POST',
@@ -741,9 +746,6 @@ function processPayment(evt) {
         body: JSON.stringify(payload)
     })
     .then(response => {
-        console.log('Response status:', response.status);
-        console.log('Response headers:', response.headers);
-        
         if (!response.ok) {
             return response.text().then(text => {
                 throw new Error(`HTTP ${response.status}: ${text}`);
@@ -752,8 +754,6 @@ function processPayment(evt) {
         return response.json();
     })
     .then(data => {
-        console.log('Response data:', data);
-        
         // Validasi struktur response
         if (!data || !data.data) {
             throw new Error('Response format tidak sesuai. Data tidak ditemukan.');
@@ -812,8 +812,10 @@ function displayQRModal(data) {
         // Buka QR modal
         const qrModal = document.getElementById('qrModal');
         qrModal.style.display = 'block';
-        // Scroll ke atas
-        qrModal.querySelector('.modal-content').scrollTop = 0;
+        // Scroll ke atas (use requestAnimationFrame to avoid forced reflow)
+        requestAnimationFrame(() => {
+            qrModal.querySelector('.modal-content').scrollTop = 0;
+        });
     } catch (error) {
         console.error('Error displaying QR modal:', error);
         alert('Terjadi kesalahan saat menampilkan QR code. Silakan coba lagi.\n\nError: ' + error.message);
@@ -845,26 +847,26 @@ function loadCartFromStorage() {
 
 // Animasi flying item ke cart icon
 function animateAddToCart(button, productName) {
-    // Dapatkan posisi button
+    // Batch all reads first (before any writes)
     const buttonRect = button.getBoundingClientRect();
     const cartIcon = document.querySelector('.cart-icon');
     const cartRect = cartIcon.getBoundingClientRect();
     
-    // Buat elemen flying item
+    // Now do all writes
     const flyingItem = document.createElement('div');
     flyingItem.className = 'flying-item';
-    flyingItem.innerHTML = '🛒';
+    flyingItem.innerHTML = 'ðŸ›’';
     flyingItem.style.left = buttonRect.left + 'px';
     flyingItem.style.top = buttonRect.top + 'px';
     document.body.appendChild(flyingItem);
     
-    // Trigger animasi
-    setTimeout(() => {
+    // Trigger animasi with requestAnimationFrame to batch layout changes
+    requestAnimationFrame(() => {
         flyingItem.style.left = cartRect.left + 'px';
         flyingItem.style.top = cartRect.top + 'px';
         flyingItem.style.opacity = '0';
         flyingItem.style.transform = 'scale(0.5)';
-    }, 10);
+    });
     
     // Hapus elemen setelah animasi selesai
     setTimeout(() => {
@@ -881,20 +883,18 @@ function showCartNotification(productName) {
     // Buat tooltip
     const tooltip = document.createElement('div');
     tooltip.className = 'cart-tooltip';
-    tooltip.textContent = `✓ ${productName} ditambahkan!`;
+    tooltip.textContent = `âœ“ ${productName} ditambahkan!`;
     document.body.appendChild(tooltip);
     
-    // Dapatkan posisi cart icon
+    // Batch all layout reads together
     const cartRect = cartIcon.getBoundingClientRect();
-    
-    // Cek apakah mobile view
     const isMobile = window.innerWidth < 768;
     
     if (isMobile) {
         tooltip.classList.add('mobile-tooltip');
         
-        // Tunggu tooltip di-render untuk mendapatkan width-nya
-        setTimeout(() => {
+        // Use requestAnimationFrame to batch layout queries
+        requestAnimationFrame(() => {
             const tooltipRect = tooltip.getBoundingClientRect();
             const tooltipWidth = tooltipRect.width;
             const viewportWidth = window.innerWidth;
@@ -914,23 +914,23 @@ function showCartNotification(productName) {
             
             tooltip.style.left = leftPos + 'px';
             tooltip.style.top = (cartRect.bottom + 15) + 'px';
-        }, 0);
+            
+            // Animasi tooltip
+            setTimeout(() => {
+                tooltip.classList.add('show');
+            }, 10);
+        });
     } else {
         // Di desktop, letakkan di bawah cart icon
         tooltip.style.position = 'fixed';
         tooltip.style.left = (cartRect.left + cartRect.width / 2) + 'px';
         tooltip.style.top = (cartRect.bottom + 15) + 'px';
+        
+        // Animasi tooltip
+        setTimeout(() => {
+            tooltip.classList.add('show');
+        }, 10);
     }
-    
-    // Set posisi awal untuk desktop
-    if (!isMobile) {
-        tooltip.style.position = 'fixed';
-    }
-    
-    // Animasi tooltip
-    setTimeout(() => {
-        tooltip.classList.add('show');
-    }, 10);
     
     // Hapus tooltip setelah 2.5 detik
     setTimeout(() => {
@@ -947,8 +947,6 @@ function openImageSlider(productId) {
     currentImageIndex = 1;
     totalImages = 1; // Set default 1 image
     
-    console.log('Opening image slider for product:', productId);
-    
     // Load first image langsung
     const sliderImage = document.getElementById('sliderImage');
     const counter = document.getElementById('sliderCounter');
@@ -960,12 +958,13 @@ function openImageSlider(productId) {
     // Open modal
     const imageSliderModal = document.getElementById('imageSliderModal');
     imageSliderModal.style.display = 'block';
-    // Scroll ke atas
-    imageSliderModal.querySelector('.modal-content').scrollTop = 0;
+    // Scroll ke atas (use requestAnimationFrame to avoid forced reflow)
+    requestAnimationFrame(() => {
+        imageSliderModal.querySelector('.modal-content').scrollTop = 0;
+    });
     
     // Detect total images di background
     detectTotalImages(productId, function(total) {
-        console.log('Total images detected:', total);
         totalImages = total || 1;
         counter.textContent = `1 / ${totalImages}`;
     });
@@ -980,14 +979,12 @@ function detectTotalImages(productId, callback) {
         const img = new Image();
         
         img.onload = function() {
-            console.log('Image found:', imagePath);
             count = index;
             // Lanjut check image berikutnya
             checkImage(index + 1);
         };
         
         img.onerror = function() {
-            console.log('Image not found:', imagePath, '- Total images:', count);
             // Image tidak ditemukan, stop checking dan return total count
             callback(count);
         };
@@ -999,10 +996,7 @@ function detectTotalImages(productId, callback) {
 }
 
 function loadSliderImage(index) {
-    console.log('Loading slider image:', index, 'Total:', totalImages);
-    
     if (index < 1 || index > totalImages) {
-        console.log('Index out of range');
         return;
     }
     
@@ -1010,8 +1004,6 @@ function loadSliderImage(index) {
     const imagePath = `product/${currentProductId}/${index}.webp`;
     const sliderImage = document.getElementById('sliderImage');
     const counter = document.getElementById('sliderCounter');
-    
-    console.log('Setting image src to:', imagePath);
     
     sliderImage.src = imagePath;
     counter.textContent = `${index} / ${totalImages}`;
@@ -1090,6 +1082,7 @@ function initializeLazyLoading() {
 
 // Tutup modal saat klik di luar
 window.onclick = function(event) {
-    // Semua modal hanya bisa ditutup dengan klik tombol close (×)
+    // Semua modal hanya bisa ditutup dengan klik tombol close (Ã—)
     // Klik di luar modal tidak melakukan action apapun
 }
+
