@@ -985,6 +985,7 @@ footer {
 
     .product-card {
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        border: 1.5px solid #D0D0D0;
     }
 
     .product-info {
@@ -1015,6 +1016,8 @@ footer {
     .product-price {
         font-size: 18px;
         text-align: center;
+        color: #8B3A63;
+        font-weight: bold;
     }
 
     .btn-add {
